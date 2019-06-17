@@ -99,7 +99,7 @@ router.post('/' , passport.authenticate('jwt' , {session : false}), (req , res) 
   //
   if(req.body.githubusername) {profileField.githubusername = req.body.githubusername}
   //skills we must split
-  if(typeof req.body.skills !== 'undefined') {profileField.skills = req.body.skills;}
+  if(typeof req.body.skills !== 'undefined') {profileField.skills = req.body.skills.split(',');}
   //socials
   profileField.social = {};
   if(req.body.youtube) {profileField.social.youtube = req.body.youtube}
@@ -215,7 +215,7 @@ router.delete('/education/:edu_id' , passport.authenticate('jwt', {session : fal
 // @route   DELETE api/profiles
 // @desc    delete user and profile
 // @access  private
-router.delete('/education/:edu_id' , passport.authenticate('jwt', {session : false}) , (req , res) => {
+router.delete('/' , passport.authenticate('jwt', {session : false}) , (req , res) => {
   Profile.findOneAndRemove({user : req.user.id}).then(() => {
     User.findOneAndRemove({_id : req.user.id}).then(() => res.json({success : true}));
   });
